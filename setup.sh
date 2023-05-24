@@ -11,7 +11,7 @@ function header() {
   clear
   echo ""
   echo "🇲 🇮 🇱 🇸  | 🇸 🇪 🇹 🇺 🇵"
-  echo "-> v: 0.1 - d: 24.05.2023"
+  echo "-> v: 0.2 - d: 24.05.2023"
   echo ""
 }
 
@@ -34,6 +34,7 @@ if [ -f .license_key ]; then
         done
 
         echo "$input" > .license_key
+        license_key=$(sed -n '1p' .license_key)
     fi
 
 else
@@ -52,7 +53,8 @@ while [ $setup_exit -le 1 ]; do
     echo "(4) - Обновить контейнеры."
     echo "(5) - Обновить структуру."
     echo "(6) - Сменить лицензионный ключ."
-    echo "(0) - Exit"
+    echo "(7) - Удалить приложение."
+    echo "(0) - Выход"
 
     echo ""
     echo "Enter: "
@@ -82,6 +84,22 @@ while [ $setup_exit -le 1 ]; do
       echo "Обновляю структуру."
       cd structure && git pull && cd ../
       echo "Обновлено."
+      sleep 2
+    elif [ $user_input == "6" ]; then
+      echo "Обновление лицензионного ключа."
+      while [ -z "$input" ] || [ $(expr length "$input") -lt 3 ]; do
+            read -p "Введите лицензионный ключ: " input
+        done
+
+        echo "$input" > .license_key
+        license_key=$(sed -n '1p' .license_key)
+      echo "Лицензионный ключ - обновлен."
+      sleep 2
+    elif [ $user_input == "7" ]; then
+      echo "Удаление приложения."
+      rm -R containers
+      rm -R structure
+      echo "Приложение - удаленно."
       sleep 2
     elif [ $user_input == "0" ]; then
         exit
