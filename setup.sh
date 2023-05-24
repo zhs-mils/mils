@@ -25,6 +25,17 @@ header
 # Проверяем, существует ли файл с лицензией.
 if [ -f .license_key ]; then
     license_key=$(sed -n '1p' .license_key)
+
+    if [ -z "$license_key" ] || [ $(expr length "$license_key") -lt 3 ]; then
+        echo "ОШИБКА: Лицензионный ключ не обнаружен!"
+
+        while [ -z "$input" ] || [ $(expr length "$input") -lt 3 ]; do
+            read -p "Введите лицензионный ключ: " input
+        done
+
+        echo "$input" > .license_key
+    fi
+
 else
     echo "ОШИБКА: Файл с лицензией не обнаружен!"
     exit
@@ -40,6 +51,7 @@ while [ $setup_exit -le 1 ]; do
     echo "(3) - Обновить инсталлятор."
     echo "(4) - Обновить контейнеры."
     echo "(5) - Обновить структуру."
+    echo "(6) - Сменить лицензионный ключ."
     echo "(0) - Exit"
 
     echo ""
