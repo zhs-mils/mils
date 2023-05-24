@@ -69,7 +69,7 @@ while [ $setup_exit -le 1 ]; do
         sleep 1
     elif [ $user_input == "3" ]; then
         echo "Запускаю процесс обновления инсталлятора."
-        git pull
+        git reset --hard && git pull --rebase
         echo "Инсталлятор обновлен. Перезапустите скрипт!"
         sleep 2
         exit
